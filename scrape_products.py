@@ -9,11 +9,14 @@ logging.basicConfig(level=logging.ERROR)
 def get_soup(url, timeout=10):
     try:
         page = requests.get(url, timeout=timeout)
-        page.raise_for_status()
-        soup = BeautifulSoup(page.text, 'html.parser')
-        return soup
+        if page.status_code == 200:
+            soup = BeautifulSoup(page.text, 'html.parser')
+            return soup
+        else:
+            logging.error("Error during requests to %s : %s", url, str(page.status_code))
+            return None
     except RequestException as e:
-        logging.error("Error during requests to %s : %s", url, str(e))
+        logging.error("Error during requests to %s : %s", url, repr(e))
         return None
 
 
@@ -31,6 +34,8 @@ def scrape_products(url, timeout=10):
         product = scrape_product(product_url, timeout)
         if product:
             products.append(product)
+        if len(products) == 10:
+            break
 
     return products
 

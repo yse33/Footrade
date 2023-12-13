@@ -7,31 +7,37 @@ logging.basicConfig(level=logging.INFO)
 def process_product(product):
     title = None
     try:
-        brand = product.find('div', class_='heading-eyebrow').find('a').text.strip().lower()
-        title = product.find('h1', class_='heading-2').text.strip()
+        brand = product.select_one('div.heading-eyebrow a').text.strip().lower()
+        model = product.select_one('h1.heading-2').text.strip()
 
-        new_price = product.find('div', class_='price').text.strip()
-        old_price = product.find('div', class_='price-old').text.strip()
+        new_price = float(
+            product.select_one('div.price').text.strip()
+            .replace('\xa0лв.', '').replace(',', '.')
+        )
+        old_price = float(
+            product.select_one('div.price-old').text.strip()
+            .replace('\xa0лв.', '').replace(',', '.')
+        )
 
-        size_list = product.find('div', class_='component-sizes__size-list')
+        size_list = product.select_one('div.component-sizes__size-list')
         all_sizes = [
             size.text.strip()
-            for size in size_list.find_all('div', class_='component-sizes__size')
+            for size in size_list.select('div.component-sizes__size')
         ]
         available_sizes = [
-            a.find('div').text.strip()
-            for a in size_list.find_all('a', class_='component-sizes__size-text')
+            a.select_one('div').text.strip()
+            for a in size_list.select('a.component-sizes__size-text')
         ]
 
-        provider = product.find('a', class_='provider-link').text.strip()
-        provider_url = product.find('a', class_='j-track-ec')['href']
+        provider = product.select_one('a.provider-link').text.strip()
+        provider_url = product.select_one('a.j-track-ec')['href']
 
         images = [
             a['data-src-orig']
-            for a in product.find_all('a', class_='detail-change-photo')
+            for a in product.select('a.detail-change-photo')
         ]
 
-        shoe = Shoe(brand, title, new_price, old_price, all_sizes, available_sizes,
+        shoe = Shoe(brand, model, new_price, old_price, all_sizes, available_sizes,
                     provider, provider_url, images)
 
         return shoe
