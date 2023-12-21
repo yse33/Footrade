@@ -1,25 +1,46 @@
+import logging
 from shoe import Shoe
+
+logging.basicConfig(level=logging.INFO)
 
 
 def process_product(product):
     title = None
     try:
-        brand = product.find('div', class_='item__brand').span.text.strip()
-        title = product.find('div', class_='item__title').text.strip()
-        provider = product.find('span', class_='item__provider-name').contents[-1].strip()
+        brand = product.select_one('div.heading-eyebrow a').text.strip().lower()
+        model = product.select_one('h1.heading-2').text.strip()
 
-        size_list = product.find('span', class_='size-list')
-        sizes = [size.text.strip('| ') for size in size_list.find_all('span') if size.text.strip()]
+        new_price = float(
+            product.select_one('div.price').text.strip()
+            .replace('\xa0лв.', '').replace(',', '.')
+        )
+        old_price = float(
+            product.select_one('div.price-old').text.strip()
+            .replace('\xa0лв.', '').replace(',', '.')
+        )
 
-        new_price_tag = (product.find('span', class_='item-price__new')
-                         or product.find('span', class_='item__price__voucher'))
-        new_price = new_price_tag.text.strip() if new_price_tag else None
+        size_list = product.select_one('div.component-sizes__size-list')
+        all_sizes = [
+            size.text.strip()
+            for size in size_list.select('div.component-sizes__size')
+        ]
+        available_sizes = [
+            a.select_one('div').text.strip()
+            for a in size_list.select('a.component-sizes__size-text')
+        ]
 
-        old_price = product.find('strike', class_='item__price__old').text.strip()
-        image = product.find('img')['src']
+        provider = product.select_one('a.provider-link').text.strip()
+        provider_url = product.select_one('a.j-track-ec')['href']
 
-        shoe = Shoe(brand, title, old_price, new_price, sizes, provider, image)
+        images = [
+            a['data-src-orig']
+            for a in product.select('a.detail-change-photo')
+        ]
+
+        shoe = Shoe(brand, model, new_price, old_price, all_sizes, available_sizes,
+                    provider, provider_url, images)
+
         return shoe
     except AttributeError as e:
-        print(f'Error during processing product with title {title}, Error: {str(e)}')
+        logging.error("Error during processing %s, Error: %s", title, str(e))
         return None
