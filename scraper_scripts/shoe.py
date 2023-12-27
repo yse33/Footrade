@@ -1,5 +1,5 @@
 class Shoe:
-    def __init__(self, brand, model, new_price, old_price, all_sizes, available_sizes, provider, provider_url, images):
+    def __init__(self, brand, model, new_price, old_price, all_sizes, available_sizes, provider, url, images):
         self.brand = brand
         self.model = model
         self.new_price = new_price
@@ -7,7 +7,7 @@ class Shoe:
         self.all_sizes = all_sizes
         self.available_sizes = available_sizes
         self.provider = provider
-        self.provider_url = provider_url
+        self.url = url
         self.images = images
 
     def __str__(self):
@@ -19,7 +19,7 @@ class Shoe:
             f'Sizes: {self.all_sizes}\n'
             f'Available sizes: {self.available_sizes}\n'
             f'Provider: {self.provider}\n'
-            f'Provider url: {self.provider_url}\n'
+            f'Url: {self.url}\n'
             f'Images: {self.images}\n'
         )
 
@@ -32,6 +32,6 @@ class Shoe:
             'sizes': self.all_sizes,
             'available_sizes': self.available_sizes,
             'provider': self.provider,
-            'provider_url': self.provider_url,
+            'url': self.url,
             'images': self.images
         }

@@ -7,7 +7,7 @@ logging.basicConfig(level=logging.INFO)
 def process_product(product):
     title = None
     try:
-        brand = product.select_one('div.heading-eyebrow a').text.strip().lower()
+        brand = product.select_one('div.heading-eyebrow a').text.strip().upper()
         model = product.select_one('h1.heading-2').text.strip()
 
         new_price = float(
@@ -30,7 +30,7 @@ def process_product(product):
         ]
 
         provider = product.select_one('a.provider-link').text.strip()
-        provider_url = product.select_one('a.j-track-ec')['href']
+        url = product.select_one('a.j-track-ec')['href']
 
         images = [
             a['data-src-orig']
@@ -38,7 +38,7 @@ def process_product(product):
         ]
 
         shoe = Shoe(brand, model, new_price, old_price, all_sizes, available_sizes,
-                    provider, provider_url, images)
+                    provider, url, images)
 
         return shoe
     except AttributeError as e:

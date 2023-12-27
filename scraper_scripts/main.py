@@ -8,7 +8,7 @@ from store_products import store_products
 load_dotenv()
 
 url = os.getenv('SCRAPE_URL')
-uri = os.getenv('MONGO_URI')
+uri = os.getenv('MONGODB_URI')
 
 products = scrape_products(url)
 processed_products = [
