@@ -23,7 +23,7 @@ public class ShoeController {
 
     @GetMapping("/brand/{brand}")
     public ResponseEntity<?> getAllShoesByBrand(@PathVariable String brand) {
-        return ResponseEntity.ok(shoeService.getAllByBrand(brand));
+        return ResponseEntity.ok(shoeService.getAllByBrandAndOnSale(brand));
     }
 
     @GetMapping("/provider/{provider}")

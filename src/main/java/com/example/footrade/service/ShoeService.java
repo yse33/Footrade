@@ -14,4 +14,5 @@ public interface ShoeService {
     List<ShoeDetailDTO> getAllByBrand(String brand);
     List<ShoeDetailDTO> getAllByProvider(String provider);
     List<ShoeDetailDTO> getAllByNewPriceLessThan(BigDecimal price);
+    List<ShoeDetailDTO> getAllByBrandAndOnSale(String brand);
 }

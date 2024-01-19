@@ -58,7 +58,11 @@ public class UserServiceImpl implements UserService {
             );
             user = (User) authentication.getPrincipal();
         } catch (AuthenticationException e) {
-            throw new BadCredentialsException("Invalid username/password!", e);
+            if (userRepository.existsByUsername(userLoginDTO.getUsername())) {
+                throw new BadCredentialsException("Wrong password!", e);
+            } else {
+                throw new BadCredentialsException("Wrong username!", e);
+            }
         }
 
         SecurityContextHolder.getContext().setAuthentication(authentication);

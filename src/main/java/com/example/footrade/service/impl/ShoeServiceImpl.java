@@ -55,4 +55,9 @@ public class ShoeServiceImpl implements ShoeService {
     public List<ShoeDetailDTO> getAllByNewPriceLessThan(BigDecimal price) {
         return SHOE_MAPPER.toShoeDTOs(shoeRepository.findAllByNewPriceLessThan(price));
     }
+
+    @Override
+    public List<ShoeDetailDTO> getAllByBrandAndOnSale(String brand) {
+        return SHOE_MAPPER.toShoeDTOs(shoeRepository.findAllByBrandAndOnSale(brand, true));
+    }
 }

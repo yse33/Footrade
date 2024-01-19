@@ -11,5 +11,6 @@ import java.util.List;
 public interface ShoeRepository extends MongoRepository<Shoe, String> {
     List<Shoe> findAllByBrand(String brand);
     List<Shoe> findAllByProvider(String provider);
+    List<Shoe> findAllByBrandAndOnSale(String brand, Boolean onSale);
     List<Shoe> findAllByNewPriceLessThan(BigDecimal price);
 }
