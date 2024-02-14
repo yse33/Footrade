@@ -13,13 +13,13 @@ import java.util.Date;
 
 @Component
 public class JWTGenerator {
-    @Value("${jwt.token.expiration.after.seconds}")
+    @Value("${jwt.token.expiration}")
     private long expirationTime;
     private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
     public String generateToken(User user) {
         String username = user.getUsername();
         Date currentDate = new Date();
-        Date expiryDate = new Date(currentDate.getTime() + expirationTime);
+        Date expiryDate = new Date(currentDate.getTime() + (expirationTime * 1000));
 
         return Jwts.builder()
                 .setSubject(username)

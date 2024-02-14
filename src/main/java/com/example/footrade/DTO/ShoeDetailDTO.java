@@ -21,4 +21,6 @@ public class ShoeDetailDTO {
     private String provider;
     private String url;
     private List<String> images;
+    private String initialImage;
+    private Boolean onSale;
 }

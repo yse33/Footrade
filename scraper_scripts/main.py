@@ -1,19 +1,19 @@
 import os
 from dotenv import load_dotenv
 
-from scrape_products import scrape_products
-from process_products import process_product
-from store_products import store_products
+from shoe_catalogue_scraper.catalogue_scraper import scrape_catalogue
+from shoe_discount_scraper.discount_scraper import scrape_discount
 
 load_dotenv()
 
 url = os.getenv('SCRAPE_URL')
-uri = os.getenv('MONGODB_URI')
+catalogue_url = os.getenv('CATALOGUE_SCRAPE_URL')
+uri = os.getenv('MONGO_URI')
+database_name = os.getenv('DATABASE_NAME')
+collection_name = os.getenv('COLLECTION_NAME')
+connection_string = os.getenv('CONNECTION_STRING')
+container_name = os.getenv('CONTAINER_NAME')
 
-products = scrape_products(url)
-processed_products = [
-    process_product(product)
-    for product in products
-    if process_product(product) is not None
-]
-store_products(processed_products, uri)
+# scrape_catalogue(catalogue_url, uri, database_name, collection_name, connection_string, container_name)
+
+scrape_discount(url, uri, database_name, collection_name, connection_string, container_name)
