@@ -95,6 +95,8 @@ def process_shoe(shoe_div, container_name, connection_string):
 
         brand_element = shoe_div.find('div', class_='item__brand').span
         brand = brand_element.text.strip().upper()
+        if 'ADIDAS' in brand:
+            brand = 'ADIDAS'
 
         provider_element = shoe_div.find('span', class_='item__provider-name')
         provider = provider_element.get('title').strip()

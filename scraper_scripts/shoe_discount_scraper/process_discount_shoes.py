@@ -54,6 +54,8 @@ def process_shoe(shoe_div, container_name, connection_string):
         model = shoe_div.select_one('h1.heading-2').text.strip()
 
         brand = shoe_div.select_one('div.heading-eyebrow a').text.strip().upper()
+        if 'ADIDAS' in brand:
+            brand = 'ADIDAS'
 
         new_price = float(
             shoe_div.select_one('div.price').text.strip()
