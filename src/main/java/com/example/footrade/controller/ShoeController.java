@@ -31,6 +31,13 @@ public class ShoeController {
         return ResponseEntity.ok(shoeService.getAllByQuery(query, username));
     }
 
+    @GetMapping("/suggestions")
+    public ResponseEntity<?> getSuggestions(
+            @RequestParam() String query
+    ) {
+        return ResponseEntity.ok(shoeService.getSuggestions(query));
+    }
+
     @GetMapping("/user/{username}")
     public ResponseEntity<?> getAllShoesByUserPreference(
             @PathVariable String username,

@@ -129,6 +129,15 @@ public class ShoeServiceImpl implements ShoeService {
     }
 
     @Override
+    public List<String> getSuggestions(String query) {
+        return SHOE_MAPPER.toShoeSearchDTOs(shoeRepository.findAllByModelContainingIgnoreCase(query))
+                .stream()
+                .map(ShoeSearchDTO::getModel)
+                .limit(5)
+                .toList();
+    }
+
+    @Override
     public List<ShoeDetailDTO> getAllByBrand(String brand) {
         return SHOE_MAPPER.toShoeDetailDTOs(shoeRepository.findAllByBrand(brand));
     }

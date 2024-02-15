@@ -16,6 +16,7 @@ public interface ShoeService {
     List<ShoeListingDTO> getAllByUserPreference(String username, Integer page, Integer pageSize);
     List<ShoeListingDTO> getAllByUserFavorite(String username, Integer page, Integer pageSize);
     List<ShoeSearchDTO> getAllByQuery(String query, String username);
+    List<String> getSuggestions(String query);
     List<ShoeDetailDTO> getAllByBrand(String brand);
     List<ShoeDetailDTO> getAllByProvider(String provider);
     List<ShoeDetailDTO> getAllByNewPriceLessThan(BigDecimal price);
