@@ -1,12 +1,14 @@
 package com.example.footrade.service.impl;
 
 import com.example.footrade.DTO.ShoeDetailDTO;
+import com.example.footrade.DTO.ShoeListingDTO;
 import com.example.footrade.entity.Preference;
 import com.example.footrade.entity.User;
 import com.example.footrade.repository.ShoeRepository;
 import com.example.footrade.repository.UserRepository;
 import com.example.footrade.service.ShoeService;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -47,34 +49,51 @@ public class ShoeServiceImpl implements ShoeService {
         shoeRepository.deleteById(id);
     }
 
+    private List<ShoeListingDTO> setDTOsAsFavorite(User user, List<ShoeListingDTO> shoes) {
+        List<ObjectId> shoeIds = shoes.stream().map(ShoeListingDTO::getId).toList();
+
+        SHOE_MAPPER.toShoeListingDTOs(
+                shoeRepository.findAllByIdIn(user.getFavorites()))
+                .forEach(
+                        shoe -> shoes.get(shoeIds.indexOf(shoe.getId())).setIsFavorite(shoeIds.contains(shoe.getId()))
+                );
+
+        return shoes;
+    }
+
     @Override
-    public List<ShoeDetailDTO> getAllByUserPreference(String username, Integer page, Integer pageSize) {
+    public List<ShoeListingDTO> getAllByUserPreference(String username, Integer page, Integer pageSize) {
         User user = userRepository.findByUsername(username).orElseThrow(
                 () -> new UsernameNotFoundException("User not found")
         );
         Preference preference = user.getPreference();
 
-        return SHOE_MAPPER.toShoeDetailDTOs(
+        List<ShoeListingDTO> shoesForUser = SHOE_MAPPER.toShoeListingDTOs(
                 shoeRepository.findAllByBrandInAndAvailableSizesContainingAndOnSaleIsTrue(
                         preference.getBrands(),
                         preference.getSizes(),
                         PageRequest.of(page, pageSize)
                 )
         );
+
+        return setDTOsAsFavorite(user, shoesForUser);
     }
 
     @Override
-    public List<ShoeDetailDTO> getAllByUserFavorite(String username, Integer page, Integer pageSize) {
+    public List<ShoeListingDTO> getAllByUserFavorite(String username, Integer page, Integer pageSize) {
         User user = userRepository.findByUsername(username).orElseThrow(
                 () -> new UsernameNotFoundException("User not found")
         );
 
-        return SHOE_MAPPER.toShoeDetailDTOs(
+        List<ShoeListingDTO> favoriteShoes = SHOE_MAPPER.toShoeListingDTOs(
                 shoeRepository.findAllByIdIn(
                         user.getFavorites(),
                         PageRequest.of(page, pageSize)
                 )
         );
+        favoriteShoes.forEach(shoe -> shoe.setIsFavorite(true));
+
+        return favoriteShoes;
     }
 
     @Override

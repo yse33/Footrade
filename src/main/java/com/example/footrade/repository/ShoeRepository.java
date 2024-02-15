@@ -13,6 +13,7 @@ import java.util.List;
 
 @Repository
 public interface ShoeRepository extends MongoRepository<Shoe, String> {
+    List<Shoe> findAllByIdIn(Collection<ObjectId> id);
     List<Shoe> findAllByIdIn(Collection<ObjectId> id, Pageable pageable);
     List<Shoe> findAllByBrand(String brand);
     List<Shoe> findAllByProvider(String provider);
