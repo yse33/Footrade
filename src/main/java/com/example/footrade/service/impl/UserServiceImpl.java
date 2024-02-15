@@ -10,6 +10,7 @@ import com.example.footrade.repository.UserRepository;
 import com.example.footrade.security.JWTGenerator;
 import com.example.footrade.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -85,6 +86,21 @@ public class UserServiceImpl implements UserService {
         user.setPreference(preference);
         userRepository.save(user);
         return USER_MAPPER.toUserPreferenceDTO(user);
+    }
+
+    @Override
+    public void setFavorite(String username, String id) {
+        User user = userRepository.findByUsername(username).orElseThrow(
+                () -> new UsernameNotFoundException("User not found")
+        );
+
+        if (user.getFavorites().contains(new ObjectId(id))) {
+            user.getFavorites().remove(new ObjectId(id));
+        } else {
+            user.getFavorites().add(new ObjectId(id));
+        }
+
+        userRepository.save(user);
     }
 
 }

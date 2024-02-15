@@ -40,4 +40,13 @@ public class UserController {
                 new Preference(brands.stream().map(Brand::valueOf).toList(), sizes)
         ));
     }
+
+    @PutMapping("/favorite")
+    public ResponseEntity<Void> setFavorite(
+            @RequestParam String username,
+            @RequestParam String id
+    ){
+        userService.setFavorite(username, id);
+        return ResponseEntity.ok().build();
+    }
 }
