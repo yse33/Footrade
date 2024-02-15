@@ -1,9 +1,14 @@
 package com.example.footrade.service.impl;
 
 import com.example.footrade.DTO.ShoeDetailDTO;
+import com.example.footrade.entity.Preference;
+import com.example.footrade.entity.User;
 import com.example.footrade.repository.ShoeRepository;
+import com.example.footrade.repository.UserRepository;
 import com.example.footrade.service.ShoeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -15,6 +20,7 @@ import static com.example.footrade.mapper.ShoeMapper.SHOE_MAPPER;
 @RequiredArgsConstructor
 public class ShoeServiceImpl implements ShoeService {
     private final ShoeRepository shoeRepository;
+    private final UserRepository userRepository;
 
     @Override
     public List<ShoeDetailDTO> getAll() {
@@ -39,6 +45,22 @@ public class ShoeServiceImpl implements ShoeService {
     @Override
     public void delete(String id) {
         shoeRepository.deleteById(id);
+    }
+
+    @Override
+    public List<ShoeDetailDTO> getAllByUserPreference(String username, Integer page, Integer pageSize) {
+        User user = userRepository.findByUsername(username).orElseThrow(
+                () -> new UsernameNotFoundException("User not found")
+        );
+        Preference preference = user.getPreference();
+
+        return SHOE_MAPPER.toShoeDTOs(
+                shoeRepository.findAllByBrandInAndAvailableSizesContainingAndOnSaleIsTrue(
+                        preference.getBrands(),
+                        preference.getSizes(),
+                        PageRequest.of(page, pageSize)
+                )
+        );
     }
 
     @Override
