@@ -10,4 +10,5 @@ public interface UserService {
     UserResponseDTO register(UserRegisterDTO userRegisterDTO);
     UserResponseDTO login(UserLoginDTO userLoginDTO);
     UserPreferenceDTO setPreference(String username, Preference preference);
+    void setFavorite(String username, String blogId);
 }

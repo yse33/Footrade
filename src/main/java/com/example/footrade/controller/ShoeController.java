@@ -27,6 +27,15 @@ public class ShoeController {
         return ResponseEntity.ok(shoeService.getAllByUserPreference(username, page, pageSize));
     }
 
+    @GetMapping("/favorite/{username}")
+    public ResponseEntity<?> getAllShoesByFavorite(
+            @PathVariable String username,
+            @RequestParam() Integer page,
+            @RequestParam() Integer pageSize
+    ) {
+        return ResponseEntity.ok(shoeService.getAllByUserFavorite(username, page, pageSize));
+    }
+
     @GetMapping("/brand/{brand}")
     public ResponseEntity<?> getAllShoesByBrand(@PathVariable String brand) {
         return ResponseEntity.ok(shoeService.getAllByBrandAndOnSale(brand));
