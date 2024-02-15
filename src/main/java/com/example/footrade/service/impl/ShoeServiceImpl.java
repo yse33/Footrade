@@ -55,7 +55,11 @@ public class ShoeServiceImpl implements ShoeService {
         SHOE_MAPPER.toShoeListingDTOs(
                 shoeRepository.findAllByIdIn(user.getFavorites()))
                 .forEach(
-                        shoe -> shoes.get(shoeIds.indexOf(shoe.getId())).setIsFavorite(shoeIds.contains(shoe.getId()))
+                        shoe -> {
+                            if (shoeIds.contains(shoe.getId())) {
+                                shoes.get(shoeIds.indexOf(shoe.getId())).setIsFavorite(true);
+                            }
+                        }
                 );
 
         return shoes;

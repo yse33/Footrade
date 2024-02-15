@@ -16,5 +16,5 @@ public class ShoeListingDTO {
     private BigDecimal newPrice;
     private BigDecimal oldPrice;
     private String initialImage;
-    private Boolean isFavorite;
+    private Boolean isFavorite = false;
 }
