@@ -24,22 +24,22 @@ public class ShoeServiceImpl implements ShoeService {
 
     @Override
     public List<ShoeDetailDTO> getAll() {
-        return SHOE_MAPPER.toShoeDTOs(shoeRepository.findAll());
+        return SHOE_MAPPER.toShoeDetailDTOs(shoeRepository.findAll());
     }
 
     @Override
     public ShoeDetailDTO getById(String id) {
-        return SHOE_MAPPER.toShoeDTO(shoeRepository.findById(id).orElse(null));
+        return SHOE_MAPPER.toShoeDetailDTO(shoeRepository.findById(id).orElse(null));
     }
 
     @Override
     public ShoeDetailDTO save(ShoeDetailDTO shoe) {
-        return SHOE_MAPPER.toShoeDTO(shoeRepository.save(SHOE_MAPPER.fromShoeDTO(shoe)));
+        return SHOE_MAPPER.toShoeDetailDTO(shoeRepository.save(SHOE_MAPPER.fromShoeDetailDTO(shoe)));
     }
 
     @Override
     public ShoeDetailDTO update(ShoeDetailDTO shoe, String id) {
-        return SHOE_MAPPER.toShoeDTO(shoeRepository.save(SHOE_MAPPER.fromShoeDTO(shoe)));
+        return SHOE_MAPPER.toShoeDetailDTO(shoeRepository.save(SHOE_MAPPER.fromShoeDetailDTO(shoe)));
     }
 
     @Override
@@ -54,7 +54,7 @@ public class ShoeServiceImpl implements ShoeService {
         );
         Preference preference = user.getPreference();
 
-        return SHOE_MAPPER.toShoeDTOs(
+        return SHOE_MAPPER.toShoeDetailDTOs(
                 shoeRepository.findAllByBrandInAndAvailableSizesContainingAndOnSaleIsTrue(
                         preference.getBrands(),
                         preference.getSizes(),
@@ -69,7 +69,7 @@ public class ShoeServiceImpl implements ShoeService {
                 () -> new UsernameNotFoundException("User not found")
         );
 
-        return SHOE_MAPPER.toShoeDTOs(
+        return SHOE_MAPPER.toShoeDetailDTOs(
                 shoeRepository.findAllByIdIn(
                         user.getFavorites(),
                         PageRequest.of(page, pageSize)
@@ -79,21 +79,21 @@ public class ShoeServiceImpl implements ShoeService {
 
     @Override
     public List<ShoeDetailDTO> getAllByBrand(String brand) {
-        return SHOE_MAPPER.toShoeDTOs(shoeRepository.findAllByBrand(brand));
+        return SHOE_MAPPER.toShoeDetailDTOs(shoeRepository.findAllByBrand(brand));
     }
 
     @Override
     public List<ShoeDetailDTO> getAllByProvider(String provider) {
-        return SHOE_MAPPER.toShoeDTOs(shoeRepository.findAllByProvider(provider));
+        return SHOE_MAPPER.toShoeDetailDTOs(shoeRepository.findAllByProvider(provider));
     }
 
     @Override
     public List<ShoeDetailDTO> getAllByNewPriceLessThan(BigDecimal price) {
-        return SHOE_MAPPER.toShoeDTOs(shoeRepository.findAllByNewPriceLessThan(price));
+        return SHOE_MAPPER.toShoeDetailDTOs(shoeRepository.findAllByNewPriceLessThan(price));
     }
 
     @Override
     public List<ShoeDetailDTO> getAllByBrandAndOnSale(String brand) {
-        return SHOE_MAPPER.toShoeDTOs(shoeRepository.findAllByBrandAndOnSale(brand, true));
+        return SHOE_MAPPER.toShoeDetailDTOs(shoeRepository.findAllByBrandAndOnSale(brand, true));
     }
 }
