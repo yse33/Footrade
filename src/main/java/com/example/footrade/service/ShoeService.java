@@ -12,6 +12,7 @@ public interface ShoeService {
     ShoeDetailDTO update(ShoeDetailDTO shoe, String id);
     void delete(String id);
     List<ShoeDetailDTO> getAllByUserPreference(String username, Integer page, Integer pageSize);
+    List<ShoeDetailDTO> getAllByUserFavorite(String username, Integer page, Integer pageSize);
     List<ShoeDetailDTO> getAllByBrand(String brand);
     List<ShoeDetailDTO> getAllByProvider(String provider);
     List<ShoeDetailDTO> getAllByNewPriceLessThan(BigDecimal price);

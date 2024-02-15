@@ -64,6 +64,20 @@ public class ShoeServiceImpl implements ShoeService {
     }
 
     @Override
+    public List<ShoeDetailDTO> getAllByUserFavorite(String username, Integer page, Integer pageSize) {
+        User user = userRepository.findByUsername(username).orElseThrow(
+                () -> new UsernameNotFoundException("User not found")
+        );
+
+        return SHOE_MAPPER.toShoeDTOs(
+                shoeRepository.findAllByIdIn(
+                        user.getFavorites(),
+                        PageRequest.of(page, pageSize)
+                )
+        );
+    }
+
+    @Override
     public List<ShoeDetailDTO> getAllByBrand(String brand) {
         return SHOE_MAPPER.toShoeDTOs(shoeRepository.findAllByBrand(brand));
     }
