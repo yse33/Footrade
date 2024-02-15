@@ -18,6 +18,19 @@ public class ShoeController {
         return ResponseEntity.ok(shoeService.getAll());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getShoeById(@PathVariable String id) {
+        return ResponseEntity.ok(shoeService.getById(id));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> getAllShoesByModelContaining(
+            @RequestParam() String query,
+            @RequestParam() String username
+    ) {
+        return ResponseEntity.ok(shoeService.getAllByQuery(query, username));
+    }
+
     @GetMapping("/user/{username}")
     public ResponseEntity<?> getAllShoesByUserPreference(
             @PathVariable String username,

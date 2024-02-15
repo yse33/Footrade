@@ -15,11 +15,12 @@ import java.util.List;
 public interface ShoeRepository extends MongoRepository<Shoe, String> {
     List<Shoe> findAllByIdIn(Collection<ObjectId> id);
     List<Shoe> findAllByIdIn(Collection<ObjectId> id, Pageable pageable);
+    List<Shoe> findAllByBrandInAndAvailableSizesContainingAndOnSaleIsTrue(
+            Collection<Brand> brand, List<String> availableSizes, Pageable pageable
+    );
+    List<Shoe> findAllByModelContainingIgnoreCase(String model);
     List<Shoe> findAllByBrand(String brand);
     List<Shoe> findAllByProvider(String provider);
     List<Shoe> findAllByBrandAndOnSale(String brand, Boolean onSale);
     List<Shoe> findAllByNewPriceLessThan(BigDecimal price);
-    List<Shoe> findAllByBrandInAndAvailableSizesContainingAndOnSaleIsTrue(
-            Collection<Brand> brand, List<String> availableSizes, Pageable pageable
-    );
 }
