@@ -1,8 +1,10 @@
 package com.example.footrade.service.impl;
 
+import com.example.footrade.DTO.UserPreferenceDTO;
 import com.example.footrade.DTO.UserResponseDTO;
 import com.example.footrade.DTO.UserLoginDTO;
 import com.example.footrade.DTO.UserRegisterDTO;
+import com.example.footrade.entity.Preference;
 import com.example.footrade.entity.User;
 import com.example.footrade.repository.UserRepository;
 import com.example.footrade.security.JWTGenerator;
@@ -15,6 +17,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,9 +41,9 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
         userRepository.save(user);
 
-        UserResponseDTO userResponseDTO = new UserResponseDTO();
+        UserResponseDTO userResponseDTO = USER_MAPPER.toUserResponseDTO(user);
         userResponseDTO.setToken(jwtGenerator.generateToken(user));
-
+        userResponseDTO.setHasPreference(user.getPreference() != null);
 
         return userResponseDTO;
     }
@@ -67,10 +70,21 @@ public class UserServiceImpl implements UserService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        UserResponseDTO userResponseDTO = new UserResponseDTO();
+        UserResponseDTO userResponseDTO = USER_MAPPER.toUserResponseDTO(user);
         userResponseDTO.setToken(jwtGenerator.generateToken(user));
+        userResponseDTO.setHasPreference(user.getPreference() != null);
 
         return userResponseDTO;
+    }
+
+    @Override
+    public UserPreferenceDTO setPreference(String username, Preference preference) {
+        User user = userRepository.findByUsername(username).orElseThrow(
+                () -> new UsernameNotFoundException("User not found")
+        );
+        user.setPreference(preference);
+        userRepository.save(user);
+        return USER_MAPPER.toUserPreferenceDTO(user);
     }
 
 }

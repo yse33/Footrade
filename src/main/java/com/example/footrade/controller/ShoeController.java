@@ -3,10 +3,7 @@ package com.example.footrade.controller;
 import com.example.footrade.service.ShoeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 
@@ -19,6 +16,15 @@ public class ShoeController {
     @GetMapping
     public ResponseEntity<?> getAllShoes() {
         return ResponseEntity.ok(shoeService.getAll());
+    }
+
+    @GetMapping("/user/{username}")
+    public ResponseEntity<?> getAllShoesByUserPreference(
+            @PathVariable String username,
+            @RequestParam() Integer page,
+            @RequestParam() Integer pageSize
+    ) {
+        return ResponseEntity.ok(shoeService.getAllByUserPreference(username, page, pageSize));
     }
 
     @GetMapping("/brand/{brand}")

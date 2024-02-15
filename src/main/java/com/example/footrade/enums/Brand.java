@@ -6,5 +6,4 @@ public enum Brand {
     PUMA,
     CONVERSE,
     VANS,
-    NEW_BALANCE
 }
