@@ -2,6 +2,7 @@ package com.example.footrade.service.impl;
 
 import com.example.footrade.DTO.ShoeDetailDTO;
 import com.example.footrade.DTO.ShoeListingDTO;
+import com.example.footrade.DTO.ShoeSearchDTO;
 import com.example.footrade.entity.Preference;
 import com.example.footrade.entity.User;
 import com.example.footrade.repository.ShoeRepository;
@@ -49,11 +50,27 @@ public class ShoeServiceImpl implements ShoeService {
         shoeRepository.deleteById(id);
     }
 
-    private List<ShoeListingDTO> setDTOsAsFavorite(User user, List<ShoeListingDTO> shoes) {
+    private List<ShoeListingDTO> setListingDTOsAsFavorite(User user, List<ShoeListingDTO> shoes) {
         List<ObjectId> shoeIds = shoes.stream().map(ShoeListingDTO::getId).toList();
 
         SHOE_MAPPER.toShoeListingDTOs(
                 shoeRepository.findAllByIdIn(user.getFavorites()))
+                .forEach(
+                        shoe -> {
+                            if (shoeIds.contains(shoe.getId())) {
+                                shoes.get(shoeIds.indexOf(shoe.getId())).setIsFavorite(true);
+                            }
+                        }
+                );
+
+        return shoes;
+    }
+
+    private List<ShoeSearchDTO> setSearchDTOsAsFavorite(User user, List<ShoeSearchDTO> shoes) {
+        List<ObjectId> shoeIds = shoes.stream().map(ShoeSearchDTO::getId).toList();
+
+        SHOE_MAPPER.toShoeSearchDTOs(
+                        shoeRepository.findAllByIdIn(user.getFavorites()))
                 .forEach(
                         shoe -> {
                             if (shoeIds.contains(shoe.getId())) {
@@ -80,7 +97,7 @@ public class ShoeServiceImpl implements ShoeService {
                 )
         );
 
-        return setDTOsAsFavorite(user, shoesForUser);
+        return setListingDTOsAsFavorite(user, shoesForUser);
     }
 
     @Override
@@ -98,6 +115,26 @@ public class ShoeServiceImpl implements ShoeService {
         favoriteShoes.forEach(shoe -> shoe.setIsFavorite(true));
 
         return favoriteShoes;
+    }
+
+    @Override
+    public List<ShoeSearchDTO> getAllByQuery(String query, String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(
+                () -> new UsernameNotFoundException("User not found")
+        );
+
+        List<ShoeSearchDTO> shoes = SHOE_MAPPER.toShoeSearchDTOs(shoeRepository.findAllByModelContainingIgnoreCase(query));
+
+        return setSearchDTOsAsFavorite(user, shoes);
+    }
+
+    @Override
+    public List<String> getSuggestions(String query) {
+        return SHOE_MAPPER.toShoeSearchDTOs(shoeRepository.findAllByModelContainingIgnoreCase(query))
+                .stream()
+                .map(ShoeSearchDTO::getModel)
+                .limit(5)
+                .toList();
     }
 
     @Override
