@@ -76,7 +76,8 @@ def process_shoe(shoe_div, container_name, connection_string):
             for a in size_list.select('a.component-sizes__size-text')
         ]
 
-        provider = shoe_div.select_one('a.provider-link').text.strip()
+        provider_div = shoe_div.find('div', class_='exit-link-button')
+        provider = provider_div.find('a').text.strip()
 
         image_links = [
             a['data-src-orig']
@@ -86,6 +87,10 @@ def process_shoe(shoe_div, container_name, connection_string):
         images_binary = [download_image(image) for image in image_links]
 
         images = []
+
+        if len(image_links) == 0:
+            logging.error("Error: No images found for shoe: %s", model)
+            return None
 
         blob_id = image_links[0].split('/')[-1].split('.')[0]
 

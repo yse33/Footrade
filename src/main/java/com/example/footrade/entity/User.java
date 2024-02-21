@@ -25,6 +25,7 @@ public class User implements UserDetails {
     private String password;
     private Preference preference;
     private List<ObjectId> favorites = new ArrayList<>();
+    private String deviceToken;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

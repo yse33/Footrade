@@ -15,5 +15,5 @@ connection_string = os.getenv('CONNECTION_STRING')
 container_name = os.getenv('CONTAINER_NAME')
 
 # scrape_catalogue(catalogue_url, uri, database_name, collection_name, connection_string, container_name)
-
-scrape_discount(url, uri, database_name, collection_name, connection_string, container_name)
+# for test purposes only scrape 1 page
+scrape_discount(url, uri, database_name, collection_name, connection_string, container_name, final_page=1)

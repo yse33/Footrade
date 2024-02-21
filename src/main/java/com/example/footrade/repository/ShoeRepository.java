@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -19,6 +20,7 @@ public interface ShoeRepository extends MongoRepository<Shoe, String> {
             Collection<Brand> brand, List<String> availableSizes, Pageable pageable
     );
     List<Shoe> findAllByModelContainingIgnoreCase(String model);
+    List<Shoe> findAllByLastUpdatedIsAfter(Date lastUpdated);
     List<Shoe> findAllByBrand(String brand);
     List<Shoe> findAllByProvider(String provider);
     List<Shoe> findAllByBrandAndOnSale(String brand, Boolean onSale);

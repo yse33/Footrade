@@ -49,4 +49,13 @@ public class UserController {
         userService.setFavorite(username, id);
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping("/device")
+    public ResponseEntity<Void> setDeviceToken(
+            @RequestParam String username,
+            @RequestParam String deviceToken
+    ){
+        userService.setDeviceToken(username, deviceToken);
+        return ResponseEntity.ok().build();
+    }
 }

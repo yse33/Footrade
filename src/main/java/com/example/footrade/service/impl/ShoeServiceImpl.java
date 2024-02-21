@@ -4,6 +4,7 @@ import com.example.footrade.DTO.ShoeDetailDTO;
 import com.example.footrade.DTO.ShoeListingDTO;
 import com.example.footrade.DTO.ShoeSearchDTO;
 import com.example.footrade.entity.Preference;
+import com.example.footrade.entity.Shoe;
 import com.example.footrade.entity.User;
 import com.example.footrade.repository.ShoeRepository;
 import com.example.footrade.repository.UserRepository;
@@ -15,6 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import static com.example.footrade.mapper.ShoeMapper.SHOE_MAPPER;
@@ -134,6 +136,14 @@ public class ShoeServiceImpl implements ShoeService {
                 .stream()
                 .map(ShoeSearchDTO::getModel)
                 .limit(5)
+                .toList();
+    }
+
+    @Override
+    public List<ObjectId> getUpdatedShoeIdsAfter(Date lastUpdated) {
+        return shoeRepository.findAllByLastUpdatedIsAfter(lastUpdated)
+                .stream()
+                .map(Shoe::getId)
                 .toList();
     }
 

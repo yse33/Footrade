@@ -22,6 +22,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import static com.example.footrade.mapper.UserMapper.USER_MAPPER;
 
 @Service
@@ -101,6 +103,22 @@ public class UserServiceImpl implements UserService {
         }
 
         userRepository.save(user);
+    }
+
+    @Override
+    public void setDeviceToken(String username, String deviceToken) {
+        User user = userRepository.findByUsername(username).orElseThrow(
+                () -> new UsernameNotFoundException("User not found")
+        );
+        user.setDeviceToken(deviceToken);
+        userRepository.save(user);
+    }
+
+    @Override
+    public List<String> getDeviceTokensByShoeIds(List<ObjectId> shoeIds) {
+        return userRepository.findByFavoritesIn(shoeIds).stream()
+                .map(User::getDeviceToken)
+                .toList();
     }
 
 }
