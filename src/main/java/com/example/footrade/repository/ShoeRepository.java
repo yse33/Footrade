@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
-import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -20,9 +19,5 @@ public interface ShoeRepository extends MongoRepository<Shoe, String> {
             Collection<Brand> brand, List<String> availableSizes, Pageable pageable
     );
     List<Shoe> findAllByModelContainingIgnoreCase(String model);
-    List<Shoe> findAllByLastUpdatedIsAfter(Date lastUpdated);
-    List<Shoe> findAllByBrand(String brand);
-    List<Shoe> findAllByProvider(String provider);
-    List<Shoe> findAllByBrandAndOnSale(String brand, Boolean onSale);
-    List<Shoe> findAllByNewPriceLessThan(BigDecimal price);
+    List<Shoe> findAllByOnSaleIsTrueAndLastUpdatedIsAfter(Date lastUpdated);
 }

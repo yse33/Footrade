@@ -19,7 +19,7 @@ public class ScraperScheduler {
         try {
             Date date = new Date();
 
-            ProcessBuilder processBuilder = new ProcessBuilder("python", "dummy.py");
+            ProcessBuilder processBuilder = new ProcessBuilder("python", "main.py");
             File workingDirectory = new File("scraper");
             processBuilder.directory(workingDirectory);
             processBuilder.redirectOutput(ProcessBuilder.Redirect.INHERIT);

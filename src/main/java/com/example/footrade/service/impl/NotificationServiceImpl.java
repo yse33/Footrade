@@ -38,7 +38,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void sendNotificationForUpdatedShoes(String title, String message, Date date) {
-        List<ObjectId> updatedShoeIds = shoeService.getUpdatedShoeIdsAfter(date);
+        List<ObjectId> updatedShoeIds = shoeService.getShoeIdsForNotification(date);
         List<String> userDeviceTokens = userService.getDeviceTokensByShoeIds(updatedShoeIds);
 
         for (String deviceToken : userDeviceTokens) {
