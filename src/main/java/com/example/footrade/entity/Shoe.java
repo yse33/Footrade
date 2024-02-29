@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @Document(collection = "shoes")
@@ -14,8 +15,6 @@ import java.util.List;
 public class Shoe {
     @Id
     private ObjectId id;
-    @Field("blob_id")
-    private String blobId;
     private String brand;
     private String model;
     @Field("new_price")
@@ -32,4 +31,6 @@ public class Shoe {
     private String initialImage;
     @Field("on_sale")
     private Boolean onSale;
+    @Field("last_updated")
+    private Date lastUpdated;
 }

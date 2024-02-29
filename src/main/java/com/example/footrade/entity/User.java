@@ -1,10 +1,10 @@
 package com.example.footrade.entity;
 
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,7 +25,9 @@ public class User implements UserDetails {
     private String password;
     private Preference preference;
     private List<ObjectId> favorites = new ArrayList<>();
-
+    private String deviceToken;
+    // Override methods from UserDetails
+// }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

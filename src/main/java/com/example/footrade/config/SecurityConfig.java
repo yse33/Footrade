@@ -1,5 +1,7 @@
-package com.example.footrade.security;
+package com.example.footrade.config;
 
+import com.example.footrade.security.JWTAuthenticationFilter;
+import com.example.footrade.security.JWTEntryPoint;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -51,5 +53,4 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
-
 }

@@ -5,6 +5,27 @@ from pymongo import MongoClient
 logging.basicConfig(level=logging.INFO)
 
 
+def set_on_sale_false(uri, database_name, collection_name):
+    client = None
+    try:
+        with MongoClient(uri) as client:
+            db = client[database_name]
+            collection = db[collection_name]
+
+            update_result = collection.update_many(
+                {"on_sale": True},
+                {
+                    "$set": {
+                        'on_sale': False
+                    }
+                }
+            )
+
+            logging.info("Updated %s documents", update_result.modified_count)
+    except Exception as e:
+        logging.error("Error during setting on_sale to False: %s", str(e))
+
+
 def store_shoes(shoes, uri, database_name, collection_name):
     client = None
     try:
@@ -24,6 +45,7 @@ def store_shoes(shoes, uri, database_name, collection_name):
                             'available_sizes': shoe_dict.get('available_sizes'),
                             'images': shoe_dict.get('images'),
                             'on_sale': True,
+                            'last_updated': shoe_dict.get('last_updated')
                         }
                     },
                     upsert=True
