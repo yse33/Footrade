@@ -1,8 +1,6 @@
-from datetime import datetime
-
 class Shoe:
     def __init__(self, brand, model, new_price, old_price, gender, sizes, available_sizes,
-                 provider, url, images, initial_image, blob_id, on_sale):
+                 provider, url, images, initial_image, on_sale, last_updated):
         self.brand = brand
         self.model = model
         self.new_price = new_price
@@ -14,9 +12,8 @@ class Shoe:
         self.url = url
         self.images = images
         self.initial_image = initial_image
-        self.blob_id = blob_id
         self.on_sale = on_sale
-        self.last_updated = datetime.now()
+        self.last_updated = last_updated
 
     def __str__(self):
         return (
@@ -31,7 +28,6 @@ class Shoe:
             f'Url: {self.url}\n'
             f'Images: {self.images}\n'
             f'Initial image: {self.initial_image}\n'
-            f'Blob id: {self.blob_id}\n'
             f'On sale: {self.on_sale}\n'
             f'Last updated: {self.last_updated}\n'
         )
@@ -49,7 +45,6 @@ class Shoe:
             'url': self.url,
             'images': self.images,
             'initial_image': self.initial_image,
-            'blob_id': self.blob_id,
             'on_sale': self.on_sale,
-            'last_updated': self.last_updated.strftime('%Y-%m-%d %H:%M:%S')
+            'last_updated': self.last_updated
         }

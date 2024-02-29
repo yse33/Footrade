@@ -6,7 +6,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-footrade-flutter-firebase-adminsdk-64v2w-672d8f92e7.json
+src/main/resources/footrade-firebase-adminsdk.json
 
 ### STS ###
 .apt_generated

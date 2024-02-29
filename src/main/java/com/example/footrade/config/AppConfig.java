@@ -1,4 +1,4 @@
-package com.example.footrade.security;
+package com.example.footrade.config;
 
 import com.example.footrade.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

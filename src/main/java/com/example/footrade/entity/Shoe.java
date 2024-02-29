@@ -15,8 +15,6 @@ import java.util.List;
 public class Shoe {
     @Id
     private ObjectId id;
-    @Field("blob_id")
-    private String blobId;
     private String brand;
     private String model;
     @Field("new_price")

@@ -7,7 +7,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
-@PropertySource("file:${user.dir}/.env")
+@PropertySource("file:./.env")
 public class FootradeApplication {
 
     public static void main(String[] args) {
