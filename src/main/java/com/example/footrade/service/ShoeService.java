@@ -14,5 +14,5 @@ public interface ShoeService {
     List<ShoeListingDTO> getAllByUserFavorite(Integer page, Integer pageSize);
     List<ShoeSearchDTO> getAllByQuery(String query);
     List<String> getSuggestions(String query);
-    List<ObjectId> getUpdatedShoeIdsAfter(Date lastUpdated);
+    List<ObjectId> getShoeIdsForNotification(Date lastUpdated);
 }

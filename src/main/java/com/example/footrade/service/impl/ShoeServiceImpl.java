@@ -114,8 +114,8 @@ public class ShoeServiceImpl implements ShoeService {
     }
 
     @Override
-    public List<ObjectId> getUpdatedShoeIdsAfter(Date lastUpdated) {
-        return shoeRepository.findAllByLastUpdatedIsAfter(lastUpdated)
+    public List<ObjectId> getShoeIdsForNotification(Date lastUpdated) {
+        return shoeRepository.findAllByOnSaleIsTrueAndLastUpdatedIsAfter(lastUpdated)
                 .stream()
                 .map(Shoe::getId)
                 .toList();

@@ -49,6 +49,8 @@ def get_brand_from_model(model):
         return 'PUMA'
     elif 'VANS' in model:
         return 'VANS'
+    elif 'CONVERSE' in model:
+        return 'CONVERSE'
     else:
         return None
 
